@@ -1,5 +1,6 @@
 package guru.springframework.sfgdi.services;
 
+import guru.springframework.sfgdi.repositories.EnglishGrettingRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -8,8 +9,15 @@ import org.springframework.stereotype.Service;
  */
 
 public class I18nEnglishGreetingService implements GreetingService {
+
+    private final EnglishGrettingRepository englishGrettingRepository;
+
+    public I18nEnglishGreetingService(EnglishGrettingRepository englishGrettingRepository) {
+        this.englishGrettingRepository = englishGrettingRepository;
+    }
+
     @Override
     public String sayGreeting() {
-        return "Hello World - EN";
+        return this.englishGrettingRepository.getGreeting() ;
     }
 }
