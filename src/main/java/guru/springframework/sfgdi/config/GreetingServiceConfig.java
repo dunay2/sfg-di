@@ -4,21 +4,32 @@ import guru.springframework.pets.CatPetService;
 import guru.springframework.pets.DogPetService;
 import guru.springframework.pets.PetService;
 import guru.springframework.pets.PetServiceFactory;
+import guru.springframework.sfgdi.datasource.FakeDataSource;
 import guru.springframework.sfgdi.repositories.EnglishGrettingRepository;
 import guru.springframework.sfgdi.repositories.EnglishGrettingRepositoryImpl;
 import guru.springframework.sfgdi.services.*;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.*;
 
 
 /**
  * @author jasim
  * Beans of external components. Also Config file to define beans instead of class notations
  */
+@PropertySource("classpath:datasource.properties")
 @Configuration
 public class GreetingServiceConfig {
+
+    @Bean
+    FakeDataSource fakeDataSource(@Value("${guru.username}") String username, @Value("${guru.password}") String password, @Value("${guru.jdbcurl}") String jdbcurl) {
+        FakeDataSource fakeDataSource = new FakeDataSource();
+
+        fakeDataSource.setUsername(username);
+        fakeDataSource.setPassword(password);
+        fakeDataSource.setJdbcUrl(jdbcurl);
+
+        return fakeDataSource;
+    }
 
     @Bean
     PetServiceFactory petServiceFactory() {
